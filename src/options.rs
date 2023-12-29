@@ -5,7 +5,7 @@ use anyhow::{anyhow, Result};
 use cursive::{
     view::{Nameable, Resizable},
     views::{Button, Dialog, DummyView, EditView, LinearLayout, NamedView, SelectView, TextView},
-    Cursive, backend::Dummy,
+    Cursive,
 };
 use cursive_aligned_view::Alignable;
 use rusqlite::Connection;
@@ -47,7 +47,7 @@ fn update_select(s: &mut Cursive, connection: Arc<Mutex<Connection>>) -> Result<
         return Err(anyhow!("Could not lock connection"));
     };
     s.call_on_name("options", move |view: &mut SelectView<OperatorConfig>| {
-        for i in 0..view.len() {
+        for _ in 0..view.len() {
             view.remove_item(0);
         }
         view.add_all(options.iter().map(|opt| (opt.name.clone(), opt.clone())));

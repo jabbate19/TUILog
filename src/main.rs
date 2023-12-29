@@ -1,11 +1,11 @@
-use anyhow::Result;
+use anyhow::{anyhow, Result};
 use cursive::event::Key;
 use cursive::menu::Tree;
 use cursive::views::Dialog;
 use homedir::get_my_home;
 use rusqlite::Connection;
 use std::sync::{Arc, Mutex};
-
+use std::fs;
 mod log;
 use log::new_log;
 
@@ -17,11 +17,17 @@ mod models;
 mod options;
 use options::options;
 
-mod utils;
-
 fn main() -> Result<()> {
     let mut homepath = get_my_home().unwrap().unwrap();
-    homepath.push(".tuilog/tuilog.db");
+    homepath.push(".tuilog");
+    if let Ok(folder_data) = fs::metadata(&homepath) {
+        if !folder_data.is_dir() {
+            return Err(anyhow!("ERR: ~/.tuilog is not a folder. Please delete/rename the item."));
+        }
+    } else {
+        fs::create_dir(&homepath)?;
+    }
+    homepath.push("tuilog.db");
     let connection = Connection::open(homepath)?;
     let query = "
         CREATE TABLE IF NOT EXISTS operatorconfig (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, call TEXT, grid TEXT, cqz TEXT, ituz TEXT, dxcc TEXT, cont TEXT);

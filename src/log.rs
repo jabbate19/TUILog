@@ -161,7 +161,6 @@ fn select_profile(s: &mut Cursive, connection: Arc<Mutex<Connection>>) -> Result
     let mut select = SelectView::new().h_align(HAlign::Center);
     if let Ok(conn) = connection.lock() {
         let mut stmt = conn.prepare("SELECT * FROM operatorconfig ORDER BY id ASC")?;
-        let mut options: Vec<OperatorConfig> = Vec::new();
         let options_out = stmt.query_map((), |row| {
             Ok(OperatorConfig {
                 id: row.get(0)?,

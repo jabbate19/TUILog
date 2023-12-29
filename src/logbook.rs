@@ -24,12 +24,12 @@ fn export(s: &mut Cursive, connection: Arc<Mutex<Connection>>) -> Result<()> {
         .call_on_name("start_timestamp", |view: &mut EditView| {
             let content = view.get_content();
             if content.len() > 0 {
-                return Some(NaiveDateTime::parse_from_str(
+                Some(NaiveDateTime::parse_from_str(
                     content.as_str(),
                     "%Y-%m-%d %H:%M:%S",
-                ));
+                ))
             } else {
-                return None;
+                None
             }
         })
         .unwrap();
@@ -40,12 +40,12 @@ fn export(s: &mut Cursive, connection: Arc<Mutex<Connection>>) -> Result<()> {
         .call_on_name("end_timestamp", |view: &mut EditView| {
             let content = view.get_content();
             if content.len() > 0 {
-                return Some(NaiveDateTime::parse_from_str(
+                Some(NaiveDateTime::parse_from_str(
                     content.as_str(),
                     "%Y-%m-%d %H:%M:%S",
-                ));
+                ))
             } else {
-                return None;
+                None
             }
         })
         .unwrap();
@@ -56,9 +56,9 @@ fn export(s: &mut Cursive, connection: Arc<Mutex<Connection>>) -> Result<()> {
         .call_on_name("export_path", |view: &mut EditView| {
             let content = view.get_content();
             if content.len() > 0 {
-                return Some(content);
+                Some(content)
             } else {
-                return None;
+                None
             }
         })
         .unwrap();
@@ -151,7 +151,7 @@ fn export(s: &mut Cursive, connection: Arc<Mutex<Connection>>) -> Result<()> {
             .ok_or(anyhow!("No export path received"))?
             .to_string(),
     )?;
-    file.write(
+    file.write_all(
         file_out
             .serialize()
             .map_err(|_| anyhow!("Failed to serialize data"))?
