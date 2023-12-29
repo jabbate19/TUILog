@@ -15,7 +15,7 @@ Uses SQLite as persistent storage on the user (~/.tuilog/tuilog.db), and will ex
 - DXCC
 - Continent
 
-## Log
+### Log
 
 - Callsign
 - Band
